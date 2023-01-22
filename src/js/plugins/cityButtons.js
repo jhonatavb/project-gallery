@@ -1,8 +1,15 @@
 import $ from 'jquery';
 
+import { onLoadHtmlSuccess } from '../core/includes';
+
 const duration = 300;
 
-function filterByCity(city) {
+function filterByCity(city, btn) {
+    btn.parent().each(function(_, el) {
+        $('button.filter-city').removeClass('active');
+        btn.addClass('active');
+    });
+
     $('[wm-city]').each(function(_, el) {
         const isTarget = $(this).attr('wm-city') === city
             || city === null;
@@ -24,14 +31,14 @@ $.fn.cityButtons = function() {
     });
 
     const btns = Array.from(cities).map(city => {
-        const btn = $('<button>').addClass(['btn', 'btn-info']).html(city);
-        btn.click(e => filterByCity(city));
+        const btn = $('<button>').addClass(['btn', 'btn-dark', 'filter-city']).html(city);
+        btn.click(e => filterByCity(city, btn));
         return btn;
     });
 
     const btnAll = $('<button>')
-        .addClass(['btn', 'btn-info', 'active']).html('Todas');
-    btnAll.click(e => filterByCity(null));
+        .addClass(['btn', 'btn-dark', 'filter-city', 'active']).html('Todas');
+    btnAll.click(e => filterByCity(null, btnAll));
     btns.push(btnAll);
 
     const btnGroup = $('<div>').addClass(['btn-group']);
@@ -42,5 +49,8 @@ $.fn.cityButtons = function() {
     return this;
 }
 
-$('[wm-city-buttons]').cityButtons();
+onLoadHtmlSuccess(function() {
+    $('[wm-city-buttons]').cityButtons();
+});
+
 
