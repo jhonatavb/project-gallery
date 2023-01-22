@@ -6,7 +6,7 @@ const duration = 300;
 
 function filterByCity(city, btn) {
     btn.parent().each(function(_, el) {
-        $('button.filter-city').removeClass('active');
+        $('button.btn.filter-city').removeClass('active');
         btn.addClass('active');
     });
 
